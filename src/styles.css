@@ -10,3 +10,42 @@
   margin: 10px;
   display: inline-block;
 }
+
+/* Set the font style for the status */
+.status {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Style the board rows */
+.board-row {
+  display: flex;
+}
+
+/* Style the squares */
+.square {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+/* Style the squares on hover */
+.square:hover {
+  background-color: #f5f5f5;
+}
+
+/* Style the X symbol */
+.square.x::after {
+  content: "X";
+}
+
+/* Style the O symbol */
+.square.o::after {
+  content: "O";
+}
