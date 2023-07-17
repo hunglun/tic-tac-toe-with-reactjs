@@ -1,4 +1,4 @@
-import "./styles.css";
+import "../styles.css";
 import { useState } from "react";
 function Square({ value, onSquareClick }) {
   return (
@@ -31,7 +31,7 @@ function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
-  if (winner != null) {
+  if (winner != ".") {
     status = "Winner: " + winner;
   }
   function handleClick(i) {
