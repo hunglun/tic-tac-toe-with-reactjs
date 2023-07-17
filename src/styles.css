@@ -2,3 +2,11 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: #555;
+  margin: 10px;
+  display: inline-block;
+}

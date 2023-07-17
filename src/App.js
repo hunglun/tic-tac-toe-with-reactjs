@@ -27,7 +27,7 @@ function calculateWinner(squares) {
   return null;
 }
 function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [squares, setSquares] = useState(Array(9).fill("."));
   const [xIsNext, setXIsNext] = useState(true);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
@@ -35,7 +35,7 @@ function Board() {
     status = "Winner: " + winner;
   }
   function handleClick(i) {
-    if (squares[i] != null) return;
+    if (squares[i] != ".") return;
     const nextSquares = squares.slice();
     if (xIsNext) {
       nextSquares[i] = "X";
