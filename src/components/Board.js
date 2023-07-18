@@ -31,26 +31,18 @@ function Board(props) {
     function handleClick(i) {
         if (props.squares[i] != ".") return;
         const nextSquares = props.squares.slice();
-        if (xIsNext) {
-            nextSquares[i] = "X";
-        } else {
-            nextSquares[i] = "O";
-        }
+        nextSquares[i] = xIsNext ? "X" : "O";
         setXIsNext(!xIsNext);
         props.setSquares(nextSquares);
     }
     return (
         <>
             <div className="status">{status}</div>
-            <div className="board-row">
-                {[0, 1, 2].map((index) => <Square value={props.squares[index]} onSquareClick={() => handleClick(index)} />)}
-            </div>
-            <div className="board-row">
-                {[3, 4, 5].map((index) => <Square value={props.squares[index]} onSquareClick={() => handleClick(index)} />)}
-            </div>
-            <div className="board-row">
-                {[6, 7, 8].map((index) => <Square value={props.squares[index]} onSquareClick={() => handleClick(index)} />)}
-            </div>
+            {[[0, 1, 2], [3, 4, 5], [6, 7, 8]].map((row) => {
+                return <div className="board-row">
+                    {row.map((index) => <Square value={props.squares[index]} onSquareClick={() => handleClick(index)} />)}
+                </div>
+            })}
         </>
     );
 }
