@@ -8,12 +8,12 @@ function randomMove(){
  
     const colIndex = Math.floor(Math.random() * 3);
     const rowIndex = Math.floor(Math.random() * 3);
-    return  {"colIndex": colIndex, "rowIndex": rowIndex};
+    return  {"colIndex": colIndex, "rowIndex": rowIndex, "marker": "X"};
 
 }
 
 function Play(props){
-    const [nextMove, setNextMove] = useState({colIndex: 0,rowIndex: 0});
+    const [nextMove, setNextMove] = useState({colIndex: 0,rowIndex: 0, marker: "."});
     
     function makeMove(){
         // TODO replace randomMove with intelligent move

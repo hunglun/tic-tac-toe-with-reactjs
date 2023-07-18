@@ -8,8 +8,7 @@ function App() {
   function updateBoard(move){
     setSquares(squares => {
       const nextSquares = squares.slice();
-      // TODO figure out whether to use X or O based on the current state of the board
-      nextSquares[move.colIndex + move.rowIndex * 3] = "X";
+      nextSquares[move.colIndex + move.rowIndex * 3] = move.marker;
       return nextSquares;
     });    
     console.log("updateBoard", move.colIndex, ",", move.rowIndex)
