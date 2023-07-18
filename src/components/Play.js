@@ -16,6 +16,8 @@ function Play(props){
     const [nextMove, setNextMove] = useState({colIndex: 0,rowIndex: 0});
     
     function makeMove(){
+        // TODO replace randomMove with intelligent move
+        // TODO use props.squares to determine the next move
         const move=randomMove();
         setNextMove(move);  
         props.updateBoard(move);      

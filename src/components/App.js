@@ -16,7 +16,7 @@ function App() {
   }
   return <div>
     <h1>Tic Tac Toe</h1>
-    <Play opponent="AI" updateBoard={updateBoard} />
+    <Play opponent="AI" updateBoard={updateBoard} squares={squares}/>
     <Board squares={squares} setSquares={setSquares} /></div>;
 } 
 
