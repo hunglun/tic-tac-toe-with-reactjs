@@ -6,8 +6,8 @@ function NextMove(props){
 }
 function randomMove(){
  
-    const colIndex = Math.floor(Math.random() * 4);
-    const rowIndex = Math.floor(Math.random() * 4);
+    const colIndex = Math.floor(Math.random() * 3);
+    const rowIndex = Math.floor(Math.random() * 3);
     return  {"colIndex": colIndex, "rowIndex": rowIndex};
 
 }
@@ -15,7 +15,12 @@ function randomMove(){
 function Play(props){
     const [nextMove, setNextMove] = useState({colIndex: 0,rowIndex: 0});
     
-return <div><button onClick={()=>setNextMove(randomMove()) }>Ask {props.opponent}</button>
+    function makeMove(){
+        const move=randomMove();
+        setNextMove(move);  
+        props.updateBoard(move);      
+    }
+    return <div><button onClick={makeMove}>Ask {props.opponent}</button>
     <NextMove colIndex={nextMove.colIndex} rowIndex={nextMove.rowIndex}/>
     </div>;
 }

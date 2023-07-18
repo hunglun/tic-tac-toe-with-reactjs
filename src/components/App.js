@@ -3,10 +3,21 @@ import {useState} from "react";
 import Board from "./Board"
 import Play from "./Play"
 function App() {
+
+  const [squares, setSquares] = useState(Array(9).fill("."));
+  function updateBoard(move){
+    setSquares(squares => {
+      const nextSquares = squares.slice();
+      // TODO figure out whether to use X or O based on the current state of the board
+      nextSquares[move.colIndex + move.rowIndex * 3] = "X";
+      return nextSquares;
+    });    
+    console.log("updateBoard", move.colIndex, ",", move.rowIndex)
+  }
   return <div>
     <h1>Tic Tac Toe</h1>
-    <Play opponent="AI" />
-    <Board /></div>;
+    <Play opponent="AI" updateBoard={updateBoard} />
+    <Board squares={squares} setSquares={setSquares} /></div>;
 } 
 
 export default App; 
