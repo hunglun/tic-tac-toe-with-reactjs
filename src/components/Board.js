@@ -6,8 +6,8 @@ function Board(props) {
     return (
         <>
             {[[0, 1, 2], [3, 4, 5], [6, 7, 8]].map((row) => {
-                return <div className="board-row">
-                    {row.map((index) => <Square value={props.squares[index]} onSquareClick={() => props.handleClick(index)} />)}
+                return <div key={row[0]} className="board-row">
+                    {row.map((index) => <Square key={index} value={props.squares[index]} onSquareClick={() => props.handleClick(index)} />)}
                 </div>
             })}
         </>

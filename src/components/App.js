@@ -10,6 +10,7 @@ function App() {
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
   if (winner != ".") {
+    // bug 2: there should be only at most one winner per game. 
     status = "Winner: " + winner;
   }
   function handleClick(i) {
@@ -40,7 +41,9 @@ function App() {
     return ".";
   }
 
+
   return <div>
+
     <h1>Tic Tac Toe</h1>
     <div className="status">{status}</div>
     <Play opponent="AI" handleClick={handleClick} squares={squares} xIsNext={xIsNext} />
