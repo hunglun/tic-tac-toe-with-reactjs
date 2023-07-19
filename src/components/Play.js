@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 function NextMove(props) {
@@ -15,8 +15,15 @@ function Play(props) {
     }
 
     function Autoplay(props) {
+        useEffect(() => {
+            const interval = setInterval(()=> { autoplay && makeMove()}, 1000);
+            return () => clearInterval(interval);
+            }, [autoplay]);
+
         return <div> <input type="checkbox" name="autoplay" defaultChecked={autoplay} onClick={(event) => {
-            setAutoplay(event.target.checked)
+            setAutoplay(event.target.checked);
+          
+
         }} />
             <label>Autoplay: {autoplay.toString()}</label>
         </div>;
@@ -29,8 +36,6 @@ function Play(props) {
         props.handleClick(move.colIndex + move.rowIndex * 3);
         console.log(move.colIndex, ",", move.rowIndex)
     }
-    // bug 1: setInterval is not cleared when autoplay is unchecked
-    setInterval(() => { if (autoplay) { makeMove()} }, 1000);
     return <div> <Autoplay /><button onClick={makeMove}>Ask {props.opponent}</button>
         <NextMove colIndex={nextMove.colIndex} rowIndex={nextMove.rowIndex} />
     </div>;

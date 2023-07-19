@@ -5,11 +5,10 @@ import Play from "./Play"
 function App() {
 
   const [squares, setSquares] = useState(Array(9).fill("."));
-
   const [xIsNext, setXIsNext] = useState(true);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
-  if (winner != ".") {
+  if (winner != "." ) {
     // bug 2: there should be only at most one winner per game. 
     status = "Winner: " + winner;
   }
