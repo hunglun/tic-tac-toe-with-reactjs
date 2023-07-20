@@ -1,51 +1,66 @@
-.App {
-  font-family: sans-serif;
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
   text-align: center;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
 
-.square {
-  width: 100px;
-  height: 100px;
-  background-color: #555;
-  margin: 10px;
-  display: inline-block;
+h1 {
+  color: #ff6f61;
+  margin-top: 30px;
 }
 
-/* Set the font style for the status */
 .status {
   font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  color: #009688;
+  margin: 20px 0;
 }
 
-/* Style the board rows */
 .board-row {
   display: flex;
+  /* flex-wrap: wrap; */
+  max-width: 360px;
+  margin: auto;
 }
 
-/* Style the squares */
 .square {
   width: 100px;
   height: 100px;
-  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #ffcc80;
+  color: #fff;
+  border: 2px solid #009688;
+  margin: -2px 0 0 -2px;
+}
+
+.square:hover {
+  background-color: #ffb74d;
+}
+
+.play-options {
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: 36px;
+  margin: 20px;
+}
+
+.play-option {
+  margin: 0 10px;
   cursor: pointer;
+  color: #009688;
+  border: 2px solid #009688;
+  padding: 8px 16px;
+  border-radius: 5px;
 }
 
-/* Style the squares on hover */
-.square:hover {
-  background-color: #f5f5f5;
-}
-
-/* Style the X symbol */
-.square.x::after {
-  content: "X";
-}
-
-/* Style the O symbol */
-.square.o::after {
-  content: "O";
+.play-option.active {
+  background-color: #009688;
+  color: #fff;
 }
