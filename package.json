@@ -1,6 +1,7 @@
 {
   "name": "tic-tac-toe",
   "version": "1.0.0",
+  "homepage": "https://hunglun.github.io/tic-tac-toe-with-reactjs",
   "description": "made according to react.js tutorial",
   "keywords": [],
   "main": "src/index.js",
@@ -12,13 +13,16 @@
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",
+    "gh-pages": "^5.0.0",
     "typescript": "4.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": [
     ">0.2%",
