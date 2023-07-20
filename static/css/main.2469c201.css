@@ -1,2 +1,0 @@
-.App{font-family:sans-serif;text-align:center}.square{background-color:#555;display:inline-block;margin:10px}.status{font-size:24px;font-weight:700;margin-bottom:10px}.board-row,.square{display:flex}.square{align-items:center;border:1px solid #ccc;cursor:pointer;font-size:36px;height:100px;justify-content:center;width:100px}.square:hover{background-color:#f5f5f5}.square.x:after{content:"X"}.square.o:after{content:"O"}
-/*# sourceMappingURL=main.2469c201.css.map*/
