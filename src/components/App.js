@@ -8,8 +8,7 @@ function App() {
   const [xIsNext, setXIsNext] = useState(true);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
-  if (winner != "." ) {
-    // bug 2: there should be only at most one winner per game. 
+  if (winner != ".") {
     status = "Winner: " + winner;
   }
   function handleClick(i) {
@@ -41,12 +40,14 @@ function App() {
   }
 
 
-  return <div>
+  return <div
+    style={{ pointerEvents: winner != "." ? "none" : null }}>
 
     <h1>Tic Tac Toe</h1>
     <div className="status">{status}</div>
     <Play opponent="AI" handleClick={handleClick} squares={squares} xIsNext={xIsNext} />
-    <Board handleClick={handleClick} squares={squares} setSquares={setSquares} /></div>;
+    <Board
+      handleClick={handleClick} squares={squares} setSquares={setSquares} /></div>;
 }
 
 export default App; 
