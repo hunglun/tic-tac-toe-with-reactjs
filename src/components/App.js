@@ -6,11 +6,34 @@ function App() {
 
   const [squares, setSquares] = useState(Array(9).fill("."));
   const [xIsNext, setXIsNext] = useState(true);
+  const [reset, setReset] = useState(false);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
+  
   if (winner != ".") {
+    
     status = "Winner: " + winner;
+    if (reset){
+      setReset(false);
+      setSquares(Array(9).fill("."));
+    }
+    // setSquares(Array(9).fill(".")); // reset the board, so autoplay can continue
   }
+  if (squares.every((val) => val != ".")) {
+    status = "Draw game!";
+
+    if (reset){
+      setReset(false);
+      setSquares(Array(9).fill("."));
+    }
+  }
+
+  function resetBoard(){
+    console.log("resetting board")
+    setReset(true);
+    // setSquares(Array(9).fill("."));
+  }
+
   function handleClick(i) {
     if (squares[i] != ".") return;
     const nextSquares = squares.slice();
@@ -41,11 +64,12 @@ function App() {
 
 
   return <div
-    style={{ pointerEvents: winner != "." ? "none" : null }}>
+    style={{ pointerEvents: winner != "." ? "none" : null }}
+  >
 
     <h1>Tic Tac Toe</h1>
     <div className="status">{status}</div>
-    <Play opponent="AI" handleClick={handleClick} squares={squares} xIsNext={xIsNext} />
+    <Play opponent="AI" handleClick={handleClick} squares={squares} calculateWinner={calculateWinner} resetBoard={resetBoard} xIsNext={xIsNext} />
     <Board
       handleClick={handleClick} squares={squares} setSquares={setSquares} /></div>;
 }
