@@ -44,33 +44,27 @@ function Play(props) {
             if (key == squaresAsString)
                 return value;
         }
-        const initialValue = squares.map((val, index) => val == "." ? 1 : 0)
+        const initialValue = squares.map((val, index) => val == "." ? 3 : 0)
         setTable({ ...table, [squaresAsString]: initialValue });
         return initialValue;
     }
+    // TODO issue: if board is filled up, status should show "Draw" instead of "Next player: X"
+    
     function intelligentMove(squares) {
         // implement Matchbox Tic-Tac-Toe algorithm
         // https://en.wikipedia.org/wiki/Matchbox_Educable_Noughts_and_Crosses_Engine
         
-        // design:
-        // create a table that matches every possible board state, or matched the current game state, or a rotation or mirror image of it.
-        // each entry in the table is a 3x3 matrix of 0, X or . (empty)
-        
-        
-        
-        // q: how to iterate over table to find a match to squares?
         const matchedValue=findMatchInTable(squares);
 
-        // convert [0,1,1,1] to [0,2,3,4]
-        const allPossibleMoves = [];
+        const allRecommendedMoves = [];
         matchedValue.forEach((val, index) => {
             for (let i = 0; i < val; i++) {
-                allPossibleMoves.push(index);
+                allRecommendedMoves.push(index);
             }
         } , [table]);
-        // pick one entry randomly from allPossibleMoves
-        const randomIndex = Math.floor(Math.random() * allPossibleMoves.length);
-        const randomMove = allPossibleMoves[randomIndex];
+        // pick one entry randomly from recommended moves
+        const randomIndex = Math.floor(Math.random() * allRecommendedMoves.length);
+        const randomMove = allRecommendedMoves[randomIndex];
         const colIndex = randomMove % 3;
         const rowIndex = Math.floor(randomMove / 3);
         console.log(table)
