@@ -17,7 +17,7 @@ function Play(props) {
 
     function Autoplay(props) {
         useEffect(() => {
-            const interval = setInterval(() => { autoplay && makeMove() }, 1000);
+            const interval = setInterval(() => { autoplay && makeMove() }, 100);
             return () => clearInterval(interval);
         }, [autoplay]);
 
@@ -42,6 +42,7 @@ function Play(props) {
         }
         const initialValue = squares.map((val, index) => val == "." ? 3 : 0)
         setTable({ ...table, [squaresAsString]: initialValue });
+        console.log("DEBUG add new entry to table", squaresAsString, initialValue);
         return initialValue;
     }
 
@@ -62,7 +63,7 @@ function Play(props) {
         const randomMove = allRecommendedMoves[randomIndex];
         const colIndex = randomMove % 3;
         const rowIndex = Math.floor(randomMove / 3);
-        console.log("random move", randomMove, colIndex, rowIndex)
+        console.log("INFO Actual move:", "square index", randomMove, "colIndex", colIndex, "rowIndex", rowIndex)
 
         return { "colIndex": colIndex, "rowIndex": rowIndex, "marker": props.xIsNext ? "X" : "O" };
 
@@ -91,8 +92,8 @@ function Play(props) {
         const squaresAsString = squares.reduce((accumulator, currentValue) => accumulator + currentValue, "")
         setHistory({ ...history, [squaresAsString]: { "move": move } })
         // if this is a winning move, then update the table to reflect that.
-        console.log(squares, table, history, squaresAsString, move)
-
+        console.log("table", table);
+        console.log("history", history);
         // train player X with random moves from player 0
 
         const updatedSquares = [...squares];
@@ -100,7 +101,22 @@ function Play(props) {
 
 
         if (isXLoser(updatedSquares, move)) {
-            // TODO update table
+
+            for (const key_hist in history) {
+                const val_hist = history[key_hist];
+                if (val_hist.move.marker != "X") continue;
+                for (const key_table in table) {
+                    const val_table = table[key_table];
+                    if (key_table === key_hist) {
+                        var updated_list = table[key_table];
+                        updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
+                            0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] - 1;
+                        setTable({ ...table, [key_table]: updated_list });
+                        console.log("DEBUG update table", key_table, updated_list)
+                    }
+                }
+            }
+
             console.log("X lost!")
 
             // clear history
@@ -111,12 +127,40 @@ function Play(props) {
             // update table
             console.log("X won!")
             // clear history
+            for (const key_hist in history) {
+                const val_hist = history[key_hist];
+                if (val_hist.move.marker != "X") continue;
+                for (const key_table in table) {
+                    const val_table = table[key_table];
+                    if (key_table === key_hist) {
+                        var updated_list = table[key_table];
+                        updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
+                            0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 2;
+                        setTable({ ...table, [key_table]: updated_list });
+                        console.log("DEBUG update table", key_table, updated_list)
+                    }
+                }
+            }
 
             props.resetBoard();
             setHistory({});
         } else if (isDraw(updatedSquares, move)) {
             // update table
             console.log("Draw game!")
+            for (const key_hist in history) {
+                const val_hist = history[key_hist];
+                if (val_hist.move.marker != "X") continue;
+                for (const key_table in table) {
+                    const val_table = table[key_table];
+                    if (key_table === key_hist) {
+                        var updated_list = table[key_table];
+                        updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
+                            0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 1;
+                        setTable({ ...table, [key_table]: updated_list });
+                        console.log("DEBUG update table", key_table, updated_list)
+                    }
+                }
+            }
 
             // clear history
             props.resetBoard();

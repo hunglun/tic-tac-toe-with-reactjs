@@ -16,6 +16,7 @@ function App() {
     if (reset){
       setReset(false);
       setSquares(Array(9).fill("."));
+      setXIsNext(true);
     }
     // setSquares(Array(9).fill(".")); // reset the board, so autoplay can continue
   }
@@ -25,6 +26,7 @@ function App() {
     if (reset){
       setReset(false);
       setSquares(Array(9).fill("."));
+      setXIsNext(true);
     }
   }
 
