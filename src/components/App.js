@@ -10,6 +10,8 @@ function App() {
   const [xIsNext, setXIsNext] = useState(true);
   const [reset, setReset] = useState(false);
   const winner = calculateWinner(squares);
+  const [numberOfGamesPlayed, setNumberOfGamesPlayed] = useState(1);
+  const [accumulatedWinsByX, setAccumulatedWinsByX] = useState([0]);
   let status = "Next player:" + (xIsNext ? "X" : "O");
 
   if (winner != ".") {
@@ -19,6 +21,14 @@ function App() {
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
+      if (winner == "X") {
+        setAccumulatedWinsByX([...accumulatedWinsByX, accumulatedWinsByX[accumulatedWinsByX.length - 1] + 1]);
+      } else {
+        setAccumulatedWinsByX([...accumulatedWinsByX, accumulatedWinsByX[accumulatedWinsByX.length - 1] - 1]);
+      }
+      setNumberOfGamesPlayed(numberOfGamesPlayed + 1);
+      // console.log("number of games played", numberOfGamesPlayed)
+      // console.log("accumulated wins", accumulatedWinsByX)
     }
     // setSquares(Array(9).fill(".")); // reset the board, so autoplay can continue
   }
@@ -29,11 +39,17 @@ function App() {
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
+
+      setAccumulatedWinsByX([...accumulatedWinsByX, accumulatedWinsByX[accumulatedWinsByX.length - 1]]);
+      setNumberOfGamesPlayed(numberOfGamesPlayed + 1);
+      // console.log("number of games played", numberOfGamesPlayed)
+      // console.log("accumulated wins", accumulatedWinsByX)
+
     }
   }
 
   function resetBoard() {
-    console.log("resetting board")
+    // console.log("resetting board")
     setReset(true);
     // setSquares(Array(9).fill("."));
   }
@@ -77,22 +93,17 @@ function App() {
     <Board
       handleClick={handleClick} squares={squares} setSquares={setSquares} />
     <LineChart
-      xAxis={[
-        {
-          id: 'barCategories',
-          data: ['bar A', 'bar B', 'bar C'],
-          scaleType: 'band',
-        },
-      ]}
+      id="line-chart"
+      xAxis={[{ label: "Number of Games Played" , data: Array.from(Array(numberOfGamesPlayed), (_, index) => index + 1) }]}
       series={[
         {
-          data: [2, 5, 3],
+          label : "Accumulated Scores by X",
+          data: accumulatedWinsByX
         },
       ]}
       width={500}
       height={300}
     />
-
   </div>;
 }
 

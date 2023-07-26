@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-
 function NextMove(props) {
     return <div><label>Next Move: {props.colIndex}, {props.rowIndex}</label></div>;
 }
@@ -42,7 +41,7 @@ function Play(props) {
         }
         const initialValue = squares.map((val, index) => val == "." ? 3 : 0)
         setTable({ ...table, [squaresAsString]: initialValue });
-        console.log("DEBUG add new entry to table", squaresAsString, initialValue);
+        // console.log("DEBUG add new entry to table", squaresAsString, initialValue);
         return initialValue;
     }
 
@@ -63,7 +62,7 @@ function Play(props) {
         const randomMove = allRecommendedMoves[randomIndex];
         const colIndex = randomMove % 3;
         const rowIndex = Math.floor(randomMove / 3);
-        console.log("INFO Actual move:", "square index", randomMove, "colIndex", colIndex, "rowIndex", rowIndex)
+        // console.log("INFO Actual move:", "square index", randomMove, "colIndex", colIndex, "rowIndex", rowIndex)
 
         return { "colIndex": colIndex, "rowIndex": rowIndex, "marker": props.xIsNext ? "X" : "O" };
 
@@ -92,8 +91,8 @@ function Play(props) {
         const squaresAsString = squares.reduce((accumulator, currentValue) => accumulator + currentValue, "")
         setHistory({ ...history, [squaresAsString]: { "move": move } })
         // if this is a winning move, then update the table to reflect that.
-        console.log("table", table);
-        console.log("history", history);
+        // console.log("table", table);
+        // console.log("history", history);
         // train player X with random moves from player 0
 
         const updatedSquares = [...squares];
@@ -112,7 +111,7 @@ function Play(props) {
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] - 1;
                         setTable({ ...table, [key_table]: updated_list });
-                        console.log("DEBUG update table", key_table, updated_list)
+                        // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
@@ -137,7 +136,7 @@ function Play(props) {
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 2;
                         setTable({ ...table, [key_table]: updated_list });
-                        console.log("DEBUG update table", key_table, updated_list)
+                        // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
@@ -157,7 +156,7 @@ function Play(props) {
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 1;
                         setTable({ ...table, [key_table]: updated_list });
-                        console.log("DEBUG update table", key_table, updated_list)
+                        // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
@@ -178,6 +177,7 @@ function Play(props) {
     }
     return <div> <Autoplay /><button onClick={makeMove}>Ask {props.opponent}</button>
         <NextMove colIndex={nextMove.colIndex} rowIndex={nextMove.rowIndex} />
+        <label> AI Cheatsheet Table Size: {Object.keys(table).length}</label>
     </div>;
 }
 export default Play;
