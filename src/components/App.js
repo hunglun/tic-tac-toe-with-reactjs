@@ -2,6 +2,8 @@ import "../styles.css";
 import { useState } from "react";
 import Board from "./Board"
 import Play from "./Play"
+import { LineChart } from '@mui/x-charts/LineChart';
+
 function App() {
 
   const [squares, setSquares] = useState(Array(9).fill("."));
@@ -9,11 +11,11 @@ function App() {
   const [reset, setReset] = useState(false);
   const winner = calculateWinner(squares);
   let status = "Next player:" + (xIsNext ? "X" : "O");
-  
+
   if (winner != ".") {
-    
+
     status = "Winner: " + winner;
-    if (reset){
+    if (reset) {
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
@@ -23,14 +25,14 @@ function App() {
   if (squares.every((val) => val != ".")) {
     status = "Draw game!";
 
-    if (reset){
+    if (reset) {
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
     }
   }
 
-  function resetBoard(){
+  function resetBoard() {
     console.log("resetting board")
     setReset(true);
     // setSquares(Array(9).fill("."));
@@ -73,7 +75,25 @@ function App() {
     <div className="status">{status}</div>
     <Play opponent="AI" handleClick={handleClick} squares={squares} calculateWinner={calculateWinner} resetBoard={resetBoard} xIsNext={xIsNext} />
     <Board
-      handleClick={handleClick} squares={squares} setSquares={setSquares} /></div>;
+      handleClick={handleClick} squares={squares} setSquares={setSquares} />
+    <LineChart
+      xAxis={[
+        {
+          id: 'barCategories',
+          data: ['bar A', 'bar B', 'bar C'],
+          scaleType: 'band',
+        },
+      ]}
+      series={[
+        {
+          data: [2, 5, 3],
+        },
+      ]}
+      width={500}
+      height={300}
+    />
+
+  </div>;
 }
 
 export default App; 
