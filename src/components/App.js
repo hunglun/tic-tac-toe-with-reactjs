@@ -32,10 +32,11 @@ function App() {
     }
     // setSquares(Array(9).fill(".")); // reset the board, so autoplay can continue
   }
-  if (squares.every((val) => val != ".")) {
+  else if (squares.every((val) => val != ".")) {
     status = "Draw game!";
 
     if (reset) {
+      
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
