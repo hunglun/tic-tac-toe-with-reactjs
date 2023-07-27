@@ -16,7 +16,7 @@ function Play(props) {
 
     function Autoplay(props) {
         useEffect(() => {
-            const interval = setInterval(() => { autoplay && makeMove() }, 100);
+            const interval = setInterval(() => { autoplay  && makeMove() }, 100);
             return () => clearInterval(interval);
         }, [autoplay]);
 
@@ -40,12 +40,13 @@ function Play(props) {
                 return value;
         }
         const initialValue = squares.map((val, index) => val == "." ? 3 : 0)
-        setTable({ ...table, [squaresAsString]: initialValue });
-        // console.log("DEBUG add new entry to table", squaresAsString, initialValue);
+        table[squaresAsString] = initialValue;
+        setTable(table);
+        // console.log("DEBUG add new entry to table", table, Object.keys(table).length, squaresAsString, initialValue);
         return initialValue;
     }
 
-    function intelligentMove(squares) {
+    function intelligentMove(squares, xIsNext) {
         // implement Matchbox Tic-Tac-Toe algorithm
         // https://en.wikipedia.org/wiki/Matchbox_Educable_Noughts_and_Crosses_Engine
 
@@ -64,7 +65,7 @@ function Play(props) {
         const rowIndex = Math.floor(randomMove / 3);
         // console.log("INFO Actual move:", "square index", randomMove, "colIndex", colIndex, "rowIndex", rowIndex)
 
-        return { "colIndex": colIndex, "rowIndex": rowIndex, "marker": props.xIsNext ? "X" : "O" };
+        return { "colIndex": colIndex, "rowIndex": rowIndex, "marker": xIsNext ? "X" : "O" };
 
         // TODO next question, how to check if one board state is a rotation or mirror image of another?
         // let's just check all 8 possible rotations and mirror images, and see if any of them match.
@@ -89,12 +90,15 @@ function Play(props) {
     function trainPlayerX(squares, move) {
         // record history of moves in table
         const squaresAsString = squares.reduce((accumulator, currentValue) => accumulator + currentValue, "")
-        setHistory({ ...history, [squaresAsString]: { "move": move } })
+        var isGameOver = false;
+        history[squaresAsString] = { "move": move };
+        setHistory(history);
+        // setHistory({ ...history, [squaresAsString]: { "move": move } })
         // if this is a winning move, then update the table to reflect that.
         // console.log("table", table);
         // console.log("history", history);
         // train player X with random moves from player 0
-
+        // console.log(squaresAsString, move)
         const updatedSquares = [...squares];
         updatedSquares[move.colIndex + move.rowIndex * 3] = move.marker;
 
@@ -110,7 +114,9 @@ function Play(props) {
                         var updated_list = table[key_table];
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] - 1;
-                        setTable({ ...table, [key_table]: updated_list });
+                        table[key_table] = updated_list;
+                        setTable(table);
+                        // setTable({ ...table, [key_table]: updated_list });
                         // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
@@ -122,6 +128,7 @@ function Play(props) {
 
             props.resetBoard();
             setHistory({});
+            isGameOver = true;
         } else if (isXWinner(updatedSquares, move)) {
             // update table
             console.log("X won!")
@@ -135,7 +142,10 @@ function Play(props) {
                         var updated_list = table[key_table];
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 2;
-                        setTable({ ...table, [key_table]: updated_list });
+                        // setTable({ ...table, [key_table]: updated_list });
+                        table[key_table] = updated_list;
+                        setTable(table);
+               
                         // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
@@ -143,6 +153,8 @@ function Play(props) {
 
             props.resetBoard();
             setHistory({});
+
+            isGameOver = true;
         } else if (isDraw(updatedSquares, move)) {
             // update table
             console.log("Draw game!")
@@ -155,7 +167,10 @@ function Play(props) {
                         var updated_list = table[key_table];
                         updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] = updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] == 0 ?
                             0 : updated_list[val_hist.move.colIndex + val_hist.move.rowIndex * 3] + 1;
-                        setTable({ ...table, [key_table]: updated_list });
+                        // setTable({ ...table, [key_table]: updated_list });
+                        table[key_table] = updated_list;
+                        setTable(table);
+               
                         // console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
@@ -164,20 +179,38 @@ function Play(props) {
             // clear history
             props.resetBoard();
             setHistory({});
+
+            isGameOver = true;
         }
 
+        return isGameOver, isGameOver ? Array(9).fill(".") : updatedSquares;
 
     }
     function makeMove() {
-        const move = intelligentMove(props.squares);
+        const move = intelligentMove(props.squares, props.xIsNext);
         trainPlayerX(props.squares, move);
         setNextMove(move);
         props.handleClick(move.colIndex + move.rowIndex * 3);
         // console.log(move.colIndex, ",", move.rowIndex)
     }
+    function selfTrain(){
+        // play with itself 1000 times
+        
+        var squares = Array(9).fill(".")
+        var xIsNext = true;
+        var isGameOver = false;
+        for (let i = 0 ; i < 1000; i++) {
+            const move = intelligentMove(squares, xIsNext);
+            isGameOver, squares = trainPlayerX(squares, move);
+            xIsNext = isGameOver? true : !xIsNext;
+            console.log("INFO self training game ", i);
+        }
+        return true;
+    }
     return <div> <Autoplay /><button onClick={makeMove}>Ask {props.opponent}</button>
         <NextMove colIndex={nextMove.colIndex} rowIndex={nextMove.rowIndex} />
         <label> AI Cheatsheet Table Size: {Object.keys(table).length}</label>
+        <div><button onClick={selfTrain}> Train 1000 moves </button></div>
     </div>;
 }
 export default Play;

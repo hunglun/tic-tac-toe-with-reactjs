@@ -36,7 +36,7 @@ function App() {
     status = "Draw game!";
 
     if (reset) {
-      
+
       setReset(false);
       setSquares(Array(9).fill("."));
       setXIsNext(true);
@@ -95,10 +95,10 @@ function App() {
       handleClick={handleClick} squares={squares} setSquares={setSquares} />
     <LineChart
       id="line-chart"
-      xAxis={[{ label: "Number of Games Played" , data: Array.from(Array(numberOfGamesPlayed), (_, index) => index + 1) }]}
+      xAxis={[{ label: "Number of Games Played", data: Array.from(Array(numberOfGamesPlayed), (_, index) => index + 1) }]}
       series={[
         {
-          label : "Accumulated Scores by X",
+          label: "Accumulated Scores by X",
           data: accumulatedWinsByX
         },
       ]}
