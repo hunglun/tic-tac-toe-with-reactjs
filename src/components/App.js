@@ -74,10 +74,12 @@ function App() {
       [0, 4, 8],
       [2, 4, 6]
     ];
+    
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        if (squares[a] == "X" || squares[a] == "O")
+          return squares[a];
       }
     }
     return ".";
@@ -85,7 +87,7 @@ function App() {
 
 
   return <div
-    style={{ pointerEvents: winner != "." ? "none" : null }}
+    // style={{ pointerEvents: winner != "." ? "none" : null }}
   >
 
     <h1>Tic Tac Toe</h1>
