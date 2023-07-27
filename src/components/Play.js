@@ -193,6 +193,7 @@ function Play(props) {
         props.handleClick(move.colIndex + move.rowIndex * 3);
         // console.log(move.colIndex, ",", move.rowIndex)
     }
+    // TODO check why table size does not increase after pressing "train 1000 moves"
     function selfTrain(){
         // play with itself 1000 times
         
@@ -203,7 +204,7 @@ function Play(props) {
             const move = intelligentMove(squares, xIsNext);
             isGameOver, squares = trainPlayerX(squares, move);
             xIsNext = isGameOver? true : !xIsNext;
-            console.log("INFO self training game ", i);
+            // console.log("INFO self training game ", i);
         }
         return true;
     }

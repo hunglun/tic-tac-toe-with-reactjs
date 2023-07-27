@@ -3,7 +3,7 @@ import { useState } from "react";
 import Board from "./Board"
 import Play from "./Play"
 import { LineChart } from '@mui/x-charts/LineChart';
-
+import Footer from "./Footer"
 function App() {
 
   const [squares, setSquares] = useState(Array(9).fill("."));
@@ -105,6 +105,7 @@ function App() {
       width={500}
       height={300}
     />
+    <Footer></Footer>
   </div>;
 }
 
