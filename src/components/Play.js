@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import calculateWinner from "../logic/CalculateWinner";
 function NextMove(props) {
     return <div><label>Next Move: {props.colIndex}, {props.rowIndex}</label></div>;
 }
@@ -76,7 +76,7 @@ function Play(props) {
 
     function isXLoser(squares, move) {
         if (move.marker != "O") return false;
-        return props.calculateWinner(squares) == "O";
+        return calculateWinner(squares) == "O";
     }
     function isDraw(squares, move) {
         return squares.every((val) => val != ".");
@@ -84,7 +84,7 @@ function Play(props) {
 
     function isXWinner(squares, move) {
         if (move.marker != "X") return false;
-        return props.calculateWinner(squares) == "X";
+        return calculateWinner(squares) == "X";
 
     }
     function trainPlayerX(squares, move) {
