@@ -3,7 +3,7 @@ function Footer() {
     const currentYear = new Date().getFullYear();
     return (
         <footer>
-            <p>Version 0.11</p>
+            <p>Version 0.12</p>
             <p>O Hung Lun</p>
             <p>Copyright © {currentYear}</p>
         </footer>

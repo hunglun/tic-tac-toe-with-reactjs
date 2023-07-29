@@ -68,7 +68,7 @@ function App() {
 
 
   return <div
-    // style={{ pointerEvents: winner != "." ? "none" : null }}
+  // style={{ pointerEvents: winner != "." ? "none" : null }}
   >
 
     <h1>Tic Tac Toe</h1>

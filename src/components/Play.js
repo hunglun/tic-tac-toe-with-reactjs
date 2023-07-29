@@ -16,7 +16,7 @@ function Play(props) {
 
     function Autoplay(props) {
         useEffect(() => {
-            const interval = setInterval(() => { autoplay  && makeMove() }, 100);
+            const interval = setInterval(() => { autoplay && makeMove() }, 100);
             return () => clearInterval(interval);
         }, [autoplay]);
 
@@ -42,7 +42,7 @@ function Play(props) {
         const initialValue = squares.map((val, index) => val == "." ? 3 : 0)
         table[squaresAsString] = initialValue;
         setTable(table);
-        // console.log("DEBUG add new entry to table", table, Object.keys(table).length, squaresAsString, initialValue);
+        console.log("DEBUG add new entry to table", table, Object.keys(table).length, squaresAsString, initialValue);
         return initialValue;
     }
 
@@ -117,21 +117,21 @@ function Play(props) {
                         table[key_table] = updated_list;
                         setTable(table);
                         // setTable({ ...table, [key_table]: updated_list });
-                        // console.log("DEBUG update table", key_table, updated_list)
+                        console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
 
-            console.log("X lost!")
-
+        
             // clear history
 
             props.resetBoard();
             setHistory({});
             isGameOver = true;
+            console.log("X lost! ", isGameOver)
+
         } else if (isXWinner(updatedSquares, move)) {
             // update table
-            console.log("X won!")
             // clear history
             for (const key_hist in history) {
                 const val_hist = history[key_hist];
@@ -145,8 +145,8 @@ function Play(props) {
                         // setTable({ ...table, [key_table]: updated_list });
                         table[key_table] = updated_list;
                         setTable(table);
-               
-                        // console.log("DEBUG update table", key_table, updated_list)
+
+                        console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
@@ -155,9 +155,10 @@ function Play(props) {
             setHistory({});
 
             isGameOver = true;
+            console.log("X won! ", isGameOver)
+          
         } else if (isDraw(updatedSquares, move)) {
             // update table
-            console.log("Draw game!")
             for (const key_hist in history) {
                 const val_hist = history[key_hist];
                 if (val_hist.move.marker != "X") continue;
@@ -170,8 +171,8 @@ function Play(props) {
                         // setTable({ ...table, [key_table]: updated_list });
                         table[key_table] = updated_list;
                         setTable(table);
-               
-                        // console.log("DEBUG update table", key_table, updated_list)
+
+                        console.log("DEBUG update table", key_table, updated_list)
                     }
                 }
             }
@@ -181,9 +182,11 @@ function Play(props) {
             setHistory({});
 
             isGameOver = true;
+            console.log("Draw game! ", isGameOver)
+          
         }
 
-        return isGameOver, isGameOver ? Array(9).fill(".") : updatedSquares;
+        return [isGameOver, isGameOver ? Array(9).fill(".") : updatedSquares];
 
     }
     function makeMove() {
@@ -194,24 +197,54 @@ function Play(props) {
         // console.log(move.colIndex, ",", move.rowIndex)
     }
     // TODO check why table size does not increase after pressing "train 1000 moves"
-    function selfTrain(){
+    function selfTrain() {
         // play with itself 1000 times
-        
+
         var squares = Array(9).fill(".")
         var xIsNext = true;
         var isGameOver = false;
-        for (let i = 0 ; i < 1000; i++) {
+        for (let i = 0; i < 1000; i++) {
             const move = intelligentMove(squares, xIsNext);
-            isGameOver, squares = trainPlayerX(squares, move);
-            xIsNext = isGameOver? true : !xIsNext;
+            [isGameOver, squares] = trainPlayerX(squares, move);
+            xIsNext = isGameOver ? true : !xIsNext;
             // console.log("INFO self training game ", i);
         }
         return true;
     }
+
+    // there are several issues with this implementation
+    // 1. print out the initial table state, and see if it is correct.
+    // 2. after a game is over, the board state should be reset to the initial state, not empty state.
+    function think() {
+        // AI looks at the current board state, try 100 moves, and see which move is the best.
+        const current_board = [...props.squares]
+        var squares = [...props.squares]
+        var xIsNext = props.xIsNext;
+        var isGameOver = false;
+
+
+        console.log("INFO AI thinks, initial table state", table)
+        for (let i = 0; i < 300; i++) {
+            const move = intelligentMove(squares, xIsNext);
+            [isGameOver, squares] = trainPlayerX(squares, move);
+            console.log("INFO AI thinks", i, table, squares, move.colIndex, move.rowIndex, move.marker, isGameOver)
+            if (isGameOver) {
+                squares = [...current_board]
+                xIsNext = true;
+            } else {
+                xIsNext = !xIsNext;
+            }
+            // console.log("INFO self training game ", i);
+        }
+        return true;
+    }
+
     return <div> <Autoplay /><button onClick={makeMove}>Ask {props.opponent}</button>
         <NextMove colIndex={nextMove.colIndex} rowIndex={nextMove.rowIndex} />
         <label> AI Cheatsheet Table Size: {Object.keys(table).length}</label>
         <div><button onClick={selfTrain}> Train 1000 moves </button></div>
+        <div><button onClick={think}> AI Thinks </button></div>
+
     </div>;
 }
 export default Play;
